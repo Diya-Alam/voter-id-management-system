@@ -25,9 +25,9 @@ void registerVoter(struct Voter *voter)
     voter->id = rand();
 
     printf("\nRegistration complete!\n");
-    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n", voter->id, voter->name, voter->address, voter->phoneNumber);
+    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n",voter->id, voter->name, voter->address, voter->phoneNumber);
 
-    exit(0);
+
 }
 
 void adminLogin()
@@ -43,14 +43,65 @@ void adminLogin()
 
     if (strcmp(username, "admin") == 0 && strcmp(password, "87654321") == 0)
     {
-        printf("\nAdministrator login successful.\n");
-        exit(0); //temporary
+        printf("\nAdministrator login successful!\n");
     }
     else
     {
         printf("\nAdministrator login failed. Exiting program.\n");
         exit(0);
     }
+}
+
+void showAllVoters(struct Voter *voters, int numVoters)
+{
+    if (numVoters == 0)
+    {
+        printf("No voters registered yet.\n");
+    }
+    else
+    {
+        printf("\nList of Registered Voters:\n");
+        for (int i = 0; i < numVoters; ++i)
+        {
+            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber);
+        }
+    }
+}
+
+void searchVoterByName(struct Voter *voters, int numVoters, char *searchName)
+{
+    int found = 0;
+    for (int i = 0; i < numVoters; ++i)
+    {
+        if (strcmp(voters[i].name, searchName) == 0)
+        {
+            printf("Voter found:\n");
+            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber);
+            found = 1;
+        }
+    }
+    if (!found)
+    {
+        printf("No information.\n");
+    }
+}
+
+void deleteVoter(struct Voter *voters, int *numVoters, int idToDelete)
+{
+    for (int i = 0; i < *numVoters; ++i)
+    {
+        if (voters[i].id == idToDelete)
+        {
+            for (int j = i; j < *numVoters - 1; ++j)
+            {
+                voters[j] = voters[j + 1];
+            }
+            (*numVoters)--;
+            printf("Voter information with ID %d deleted.\n", idToDelete);
+            return;
+        }
+    }
+    printf("Voter with ID %d not found.\n", idToDelete);
 }
 
 int main()
@@ -74,6 +125,7 @@ int main()
         switch (choice)
         {
         case 1:
+        //new voter feature 
             if (numVoters < 10)
             {
                 struct Voter newVoter;
@@ -89,7 +141,50 @@ int main()
 
         case 2:
             adminLogin();
+            // Administrator features
+            while (1)
+            {
+                printf("\nAdministrator Menu:\n");
+                printf("1. Show voter information as a list\n");
+                printf("2. Search voters by name\n");
+                printf("3. Delete voter information\n");
+                printf("4. Exit\n");
 
+                int adminChoice;
+                printf("\nYour choice: ");
+                scanf("%d", &adminChoice);
+
+                switch (adminChoice)
+                {
+                case 1:
+                    showAllVoters(voters, numVoters);
+                    break;
+
+                case 2:
+                {
+                    char searchName[20];
+                    printf("\nEnter voter name to search: ");
+                    scanf("%s", searchName);
+                    searchVoterByName(voters, numVoters, searchName);
+                    break;
+                }
+
+                case 3:
+                {
+                    int idToDelete;
+                    printf("\nEnter ID of voter to delete: ");
+                    scanf("%d", &idToDelete);
+                    deleteVoter(voters, &numVoters, idToDelete);
+                    break;
+                }
+
+                case 4:
+                    exit(0);
+
+                default:
+                    printf("Invalid choice. Please try again.\n");
+                }
+            }
             break;
 
         case 3:
