@@ -7,7 +7,7 @@ struct Voter
     char name[10];
     char address[10];
     char phoneNumber[12];
-    int id; 
+    int id;
 };
 
 void registerVoter(struct Voter *voter)
@@ -25,9 +25,32 @@ void registerVoter(struct Voter *voter)
     voter->id = rand();
 
     printf("\nRegistration complete!\n");
-    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n",voter->id, voter->name, voter->address, voter->phoneNumber);
+    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n", voter->id, voter->name, voter->address, voter->phoneNumber);
 
-    exit(0); 
+    exit(0);
+}
+
+void adminLogin()
+{
+    char username[20];
+    char password[20];
+
+    printf("\nEnter administrator username: ");
+    scanf("%s", username);
+
+    printf("Enter administrator password: ");
+    scanf("%s", password);
+
+    if (strcmp(username, "admin") == 0 && strcmp(password, "87654321") == 0)
+    {
+        printf("\nAdministrator login successful.\n");
+        exit(0); //temporary
+    }
+    else
+    {
+        printf("\nAdministrator login failed. Exiting program.\n");
+        exit(0);
+    }
 }
 
 int main()
@@ -65,10 +88,9 @@ int main()
             break;
 
         case 2:
-        {
-            // Administrator login and features
+            adminLogin();
+
             break;
-        }
 
         case 3:
             exit(0);
