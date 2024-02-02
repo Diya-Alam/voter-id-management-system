@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 struct Voter
 {
@@ -25,7 +26,6 @@ int isNumeric(const char *str)
     return 1; // All characters are digits
 }
 
-
 void registerVoter(struct Voter *voter)
 {
     printf("\nEnter your name: ");
@@ -47,7 +47,6 @@ void registerVoter(struct Voter *voter)
     }
     while (strlen(voter->phoneNumber) != 11 || !isNumeric(voter->phoneNumber));
 
-
     // Ask for the voter's age
     printf("Enter your age: ");
     scanf("%d", &voter->age);
@@ -55,8 +54,8 @@ void registerVoter(struct Voter *voter)
     // Check if the voter is below 18 years old
     if (voter->age < 18)
     {
-        printf("Sorry, you need to be 18 or older to register.\n");
-        return;
+        printf("Sorry, you must be 18 or older to register.\n");
+        return; // Redirect to the previous menu
     }
 
     // Generating a random garbage value for ID
@@ -81,7 +80,7 @@ void addVoterInformation(struct Voter *voters, int *numVoters)
         }
         else
         {
-            printf("\nVoter must be 18 or older to be added.\n");
+            printf("Voter must be 18 or older to be added.\n");
         }
     }
     else
@@ -107,8 +106,8 @@ void adminLogin()
     }
     else
     {
-        printf("\nAdministrator login failed. Returning to the Menu...\n");
-        return;
+        printf("\nAdministrator login failed. Exiting program.\n");
+        exit(0);
     }
 }
 
@@ -181,6 +180,9 @@ int main()
         int choice;
         printf("\nYour choice: ");
         scanf("%d", &choice);
+
+// Clear the input buffer
+        while ((getchar()) != '\n');
 
         switch (choice)
         {
