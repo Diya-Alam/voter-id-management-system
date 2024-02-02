@@ -8,5 +8,6 @@ A project in C language to manage Voter ID. When the user launches the console, 
 
    1. Show voter list
    2. Search voter
-   3. Delete voter information
-   4. Exit
+   3. add voter information
+   4. Delete voter information
+   5. Exit
