@@ -8,6 +8,7 @@ struct Voter
     char address[10];
     char phoneNumber[12];
     int id;
+    int age; // New field for voter's age
 };
 
 void registerVoter(struct Voter *voter)
@@ -21,11 +22,22 @@ void registerVoter(struct Voter *voter)
     printf("Enter your phone number: ");
     scanf("%s", voter->phoneNumber);
 
+    // Ask for the voter's age
+    printf("Enter your age: ");
+    scanf("%d", &voter->age);
+
+    // Check if the voter is below 18 years old
+    if (voter->age < 18)
+    {
+        printf("Sorry, you need to be 18 or older to register.\n");
+        return;
+    }
+
     // Generating a random garbage value for ID
     voter->id = rand();
 
     printf("\nRegistration complete!\n");
-    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n",voter->id, voter->name, voter->address, voter->phoneNumber);
+    printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\nAge: %d\n", voter->id, voter->name, voter->address, voter->phoneNumber, voter->age);
 }
 
 void addVoterInformation(struct Voter *voters, int *numVoters)
@@ -34,8 +46,17 @@ void addVoterInformation(struct Voter *voters, int *numVoters)
     {
         struct Voter newVoter;
         registerVoter(&newVoter);
-        voters[*numVoters] = newVoter;
-        (*numVoters)++;
+
+        // Check if the voter is below 18 years old before adding to the array
+        if (newVoter.age >= 18)
+        {
+            voters[*numVoters] = newVoter;
+            (*numVoters)++;
+        }
+        else
+        {
+            printf("\nVoter must be 18 or older to be added.\n");
+        }
     }
     else
     {
@@ -60,8 +81,8 @@ void adminLogin()
     }
     else
     {
-        printf("\nAdministrator login failed. Exiting program.\n");
-        exit(0);
+        printf("\nAdministrator login failed. Returning to the Menu...\n");
+        return;
     }
 }
 
@@ -76,7 +97,7 @@ void showAllVoters(struct Voter *voters, int numVoters)
         printf("\nList of Registered Voters:\n");
         for (int i = 0; i < numVoters; ++i)
         {
-            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber);
+            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s, Age: %d\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber, voters[i].age);
         }
     }
 }
@@ -89,7 +110,7 @@ void searchVoterByName(struct Voter *voters, int numVoters, char *searchName)
         if (strcmp(voters[i].name, searchName) == 0)
         {
             printf("Voter found:\n");
-            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber);
+            printf("ID: %d, Name: %s, Address: %s, Phone Number: %s, Age: %d\n", voters[i].id, voters[i].name, voters[i].address, voters[i].phoneNumber, voters[i].age);
             found = 1;
         }
     }
@@ -141,10 +162,7 @@ int main()
             // New voter feature
             if (numVoters < 10)
             {
-                struct Voter newVoter;
-                registerVoter(&newVoter);
-                voters[numVoters] = newVoter;
-                numVoters++;
+                addVoterInformation(voters, &numVoters);
             }
             else
             {
