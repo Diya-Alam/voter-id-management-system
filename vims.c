@@ -11,6 +11,21 @@ struct Voter
     int age; // New field for voter's age
 };
 
+// Function to validate if the input is a valid numeric string
+int isNumeric(const char *str)
+{
+    while (*str)
+    {
+        if (!isdigit(*str))
+        {
+            return 0; // Not a digit
+        }
+        str++;
+    }
+    return 1; // All characters are digits
+}
+
+
 void registerVoter(struct Voter *voter)
 {
     printf("\nEnter your name: ");
@@ -19,8 +34,19 @@ void registerVoter(struct Voter *voter)
     printf("Enter your permanent address: ");
     scanf("%s", voter->address);
 
-    printf("Enter your phone number: ");
-    scanf("%s", voter->phoneNumber);
+    // Validate and prompt for a valid 11-digit phone number
+    do
+    {
+        printf("Enter your phone number (11 digits): ");
+        scanf("%s", voter->phoneNumber);
+
+        if (strlen(voter->phoneNumber) != 11 || !isNumeric(voter->phoneNumber))
+        {
+            printf("Phone number must be 11 digits with no characters or symbols. Please try again.\n");
+        }
+    }
+    while (strlen(voter->phoneNumber) != 11 || !isNumeric(voter->phoneNumber));
+
 
     // Ask for the voter's age
     printf("Enter your age: ");
@@ -75,7 +101,7 @@ void adminLogin()
     printf("Enter administrator password: ");
     scanf("%s", password);
 
-    if (strcmp(username, "admin") == 0 && strcmp(password, "87654321") == 0)
+    if (strcmp(username, "admin") == 0 && strcmp(password, "1236") == 0)
     {
         printf("\nAdministrator login successful!\n");
     }
