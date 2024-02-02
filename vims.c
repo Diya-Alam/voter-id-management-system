@@ -26,8 +26,21 @@ void registerVoter(struct Voter *voter)
 
     printf("\nRegistration complete!\n");
     printf("\nID: %d\nName: %s\nAddress: %s\nPhone Number: %s\n",voter->id, voter->name, voter->address, voter->phoneNumber);
+}
 
-
+void addVoterInformation(struct Voter *voters, int *numVoters)
+{
+    if (*numVoters < 10)
+    {
+        struct Voter newVoter;
+        registerVoter(&newVoter);
+        voters[*numVoters] = newVoter;
+        (*numVoters)++;
+    }
+    else
+    {
+        printf("Maximum number of voters reached.\n");
+    }
 }
 
 void adminLogin()
@@ -125,7 +138,7 @@ int main()
         switch (choice)
         {
         case 1:
-        //new voter feature 
+            // New voter feature
             if (numVoters < 10)
             {
                 struct Voter newVoter;
@@ -147,8 +160,9 @@ int main()
                 printf("\nAdministrator Menu:\n");
                 printf("1. Show voter information as a list\n");
                 printf("2. Search voters by name\n");
-                printf("3. Delete voter information\n");
-                printf("4. Exit\n");
+                printf("3. Add voter information\n");
+                printf("4. Delete voter information\n");
+                printf("5. Exit\n");
 
                 int adminChoice;
                 printf("\nYour choice: ");
@@ -170,6 +184,10 @@ int main()
                 }
 
                 case 3:
+                    addVoterInformation(voters, &numVoters);
+                    break;
+
+                case 4:
                 {
                     int idToDelete;
                     printf("\nEnter ID of voter to delete: ");
@@ -178,7 +196,7 @@ int main()
                     break;
                 }
 
-                case 4:
+                case 5:
                     exit(0);
 
                 default:
